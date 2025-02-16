@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 # Code updated with Strategy Pattern
 
-from abc import ABC, abstractmethod
-from typing import List
-
 class Item:
     """ DO NOT CHANGE THIS CLASS!!!"""
     def __init__(self, name, sell_in, quality):
@@ -62,7 +59,7 @@ class GildedRose(object):
         # DO NOT CHANGE THIS ATTRIBUTE!!!
         self.items = items
 
-    def update_quality(self):
+        def update_quality(self):
         strategy_map = {
             "Aged Brie": AgedBrieUpdateStrategy(),
             "Backstage passes to a TAFKAL80ETC concert": BackstagePassesUpdateStrategy(),
@@ -77,4 +74,3 @@ class GildedRose(object):
 
  
   
-

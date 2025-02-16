@@ -1,47 +1,55 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from gilded_rose import Item, GildedRose
+from gilded_rose import Item, GildedRose, ItemUpdateStrategy, RegularItemUpdateStrategy, AgedBrieUpdateStrategy, BackstagePassesUpdateStrategy, SulfurasUpdateStrategy  
 
 
 class GildedRoseTest(unittest.TestCase):
-    # test for logical errors
-    def test_sulfuras_should_not_decrease_quality(self):
-        items = [Item("Sulfuras", 5, 80)]
+    def test_aged_brie_increases_quality(self):
+        # Arrange
+        items = [Item("Aged Brie", 10, 20)]
         gilded_rose = GildedRose(items)
+
+        # Act
         gilded_rose.update_quality()
-        sulfuras_item = items[0]
-        self.assertEqual(80, sulfuras_item.quality)
-        self.assertEqual(4, sulfuras_item.sell_in)
-        self.assertEqual("Sulfuras", sulfuras_item.name)
 
-    def test_item_quality_should_not_be_greater_than_50(self):
-        items = [Item("Backstage passes to a TAFKAL80ETC concert", 5, 49)]
+        # Assert
+        self.assertEqual(items[0].quality, 21)  # Aged Brie should increase in quality
+
+    def test_backstage_passes_increases_quality(self):
+        # Arrange
+        items = [Item("Backstage passes to a TAFKAL80ETC concert", 10, 30)]
         gilded_rose = GildedRose(items)
+
+        # Act
         gilded_rose.update_quality()
-        Backstage_passes_item = items[0]
-        self.assertEqual(49, Backstage_passes_item.quality)
-        self.assertEqual(4, Backstage_passes_item.sell_in)
-        self.assertEqual("Backstage passes to a TAFKAL80ETC concert", Backstage_passes_item.name)
-        
-    def test_item_quality_should_not_be_negative(self):
-        items = [Item("Backstage passes to a TAFKAL80ETC concert", 5, 49)]
+
+        # Assert
+        self.assertEqual(items[0].quality, 32)  # Backstage passes quality should increase by 3
+
+    def test_sulfuras_does_not_change(self):
+        # Arrange
+        items = [Item("Sulfuras, Hand of Ragnaros", 0, 80)]
         gilded_rose = GildedRose(items)
+
+        # Act
         gilded_rose.update_quality()
-        Backstage_passes_item = items[0]
-        self.assertEqual(-4, Backstage_passes_item.quality)
-        self.assertEqual(4, Backstage_passes_item.sell_in)
-        self.assertEqual("Backstage passes to a TAFKAL80ETC concert", Backstage_passes_item.name)     
-        
 
-    # test for syntax errors
-    def test_gilded_rose_list_all_items(self):
-        items = [Item("Sulfuras", 5, 80)]
+        # Assert
+        self.assertEqual(items[0].quality, 80)  # Sulfuras' quality should remain the same
+        self.assertEqual(items[0].sell_in, 0)   # Sulfuras' sell_in should remain the same
+
+    def test_regular_item_decreases_quality(self):
+        # Arrange
+        items = [Item("Regular Item", 5, 20)]
         gilded_rose = GildedRose(items)
-        all_items = gilded_rose.get_item()
-        self.assertEqual(["Sulfuras"], all_items)
 
+        # Act
+        gilded_rose.update_quality()
 
+        # Assert
+        self.assertEqual(items[0].quality, 19)  # Regular item should decrease quality by 1
+        self.assertEqual(items[0].sell_in, 4)   # Sell-in should decrease by 1
 
 if __name__ == '__main__':
     unittest.main()
